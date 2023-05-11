@@ -87,7 +87,10 @@ def getgamestat(gameID):
     URL= 'https://www.nationalleague.ch/api/games/'
     response= requests.get(URL+gameID)
     gamestats=response.json()
-    print(gamestats)
+    for obj in gamestats:
+        for i in range(len(gamestats)):
+            overview=obj[i]
+            print(overview)
 
     
 
