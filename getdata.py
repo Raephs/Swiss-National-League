@@ -34,7 +34,7 @@ def getPlayers():
 def getPlayersInfo():
     players = getPlayers()
     with open('playerinfo.json', 'w') as fp:
-        json.dump(players, fp, 7)
+        json.dump(players, fp, indent = 7)
 
 def getTeams():
     response = requests.get(API_URL % 'teams')
@@ -55,7 +55,7 @@ def getTeams():
 def getTeamsInfo():
     teamsInfo = getTeams()
     with open('teamsinfo.json', 'w') as fp:
-        json.dump(teamsInfo, fp, 4)
+        json.dump(teamsInfo, fp, indent = 4)
 
 
 def getGames():
@@ -80,7 +80,7 @@ def getGames():
 def getGamesInfo():
     gamesInfo = getGames()
     with open('gamesinfo.json', 'w') as fp:
-        json.dump(gamesInfo, fp, 5)
+        json.dump(gamesInfo, fp, indent = 5)
 
 def getGameStat(gameID: int):
     response = requests.get(API_URL % ('games') + str(gameID))
