@@ -1,98 +1,93 @@
 import requests
 import json
 
-#https://www.nationalleague.ch/api/player/
-#https://www.nationalleague.ch/api/teams/
-#https://www.nationalleague.ch/api/teams/
-#https://www.nationalleague.ch/api/games/
-#https://www.nationalleague.ch/api/games/gameid
-#https://www.nationalleague.ch/api/teams/101144/logo
-###URl
-URL= 'https://www.nationalleague.ch/api/teams/'
-URL= 'https://www.nationalleague.ch/api/player/'
-URL= 'https://www.nationalleague.ch/api/games/'
+# https://www.nationalleague.ch/api/player/
+# https://www.nationalleague.ch/api/teams/
+# https://www.nationalleague.ch/api/games/gameid
+# https://www.nationalleague.ch/api/teams/101144/logo
 
-def getplayers():
-    URL= 'https://www.nationalleague.ch/api/player/'
-    response = requests.get(URL)
-    dataplayers =response.json()
+API_URL = 'https://www.nationalleague.ch/api/%s/'
 
-    playersinf_list=[]
+def getPlayers():
+    response = requests.get(API_URL % 'player')
+    responseData = response.json()
 
-    for obj in dataplayers:
-        firstname=obj['firstName']
-        lastname= obj['lastName']
-        playernumber=obj['number']
-        nationality=obj['nationality']
-        playerposition=obj['position']
-        playerId=obj['playerId']
-        teamid=obj['teamId']
-        topscorerpoints=obj['topscorerPoints']
-        topscorerpointaverage=obj['topscorerPointAverage']
-        topscorermarketvalue=obj['topscorerMarketValue']
+    players = []
 
-        playersinf_list.append([firstname,lastname,playernumber,nationality,playerposition,playerId,teamid,topscorerpoints,topscorerpointaverage,topscorermarketvalue])
-    return playersinf_list
+    for data in responseData:
+        player = [
+            data['firstName'],
+            data['lastName'],
+            data['number'],
+            data['nationality'],
+            data['position'],
+            data['playerId'],
+            data['teamId'],
+            data['topscorerPoints'],
+            data['topscorerPointAverage'],
+            data['topscorerMarketValue']
+        ]
+        players.append(player)
 
-def getplayersinfo():
-    playersinf=getplayers()
-    with open("playerinfo.json", "w") as fp:
-        json.dump(playersinf, fp, indent= 7)
+    return players
+
+def getPlayersInfo():
+    players = getPlayers()
+    with open('playerinfo.json', 'w') as fp:
+        json.dump(players, fp, 7)
 
 def getTeams():
-    url = 'https://www.nationalleague.ch/api/teams/'
-    response = requests.get(url)
-    teams = response.json()
+    response = requests.get(API_URL % 'teams')
+    responseData = response.json()
     
-    teaminf_list = []
+    teams = []
+
+    for data in responseData:
+        team = [
+            data['name'],
+            data['teamId'],
+            data['website']
+        ];
+        teams.append(team)
     
-    for team in teams:
-        name = team['name']
-        id = team['teamId']
-        website = team['website']
-        
-        teaminf_list.append([name, id, website])
-    
-    return teaminf_list
+    return teams
 
 def getTeamsInfo():
-    teaminfo = getTeams()
+    teamsInfo = getTeams()
     with open('teamsinfo.json', 'w') as fp:
-        json.dump(teaminfo, fp, indent=4)
+        json.dump(teamsInfo, fp, 4)
 
 
-def getgames():
-    URL= 'https://www.nationalleague.ch/api/games/'
-    response = requests.get(URL)
-    datagames = response.json()
+def getGames():
+    response = requests.get(API_URL % 'games')
+    responseData = response.json()
 
-    gameinf_list=[]
-    for obj in datagames:
-        gameId=obj['gameId']
-        date=obj['date']
-        homeTeamId=obj['homeTeamId']
-        hometeamresult=obj['homeTeamResult']   
-        awayteamId=obj['awayTeamId']
-        awayteamresult=obj['awayTeamResult']
-        gameinf_list.append([gameId,date,homeTeamId,hometeamresult,awayteamId,awayteamresult])
+    games = [];
+
+    for data in responseData:
+        game = [
+            data['gameId'],
+            data['date'],
+            data['homeTeamId'],
+            data['homeTeamResult'],
+            data['awayTeamId'],
+            data['awayTeamResult'],
+        ];
+        games.append(game)
         
-    return gameinf_list    
+    return games  
 
-def getgamesinfo():
-    gamesinfo=getgames()
-    with open("gamesinfo.json", "w") as fp:
-        json.dump(gamesinfo, fp, indent= 5)
+def getGamesInfo():
+    gamesInfo = getGames()
+    with open('gamesinfo.json', 'w') as fp:
+        json.dump(gamesInfo, fp, 5)
 
-def getgamestat(gameID):
-    URL= 'https://www.nationalleague.ch/api/games/'
-    response= requests.get(URL+gameID)
-    gamestats=response.json()
-    for obj in gamestats:
-        for i in range(len(gamestats)):
-            overview=obj[i]
-            print(overview)
-
+def getGameStat(gameID: int):
+    response = requests.get(API_URL % ('games') + str(gameID))
+    responseData = response.json()
+    for dataGameStat, value in responseData.items():
+        print(dataGameStat, ' -> ', value)
     
 
-gameID= '20236105000070'
-getgamestat(gameID)    
+gameID = 20236105000070
+getGameStat(gameID)
