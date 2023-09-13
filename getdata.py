@@ -52,8 +52,8 @@ def getTeams():
         website = team['website']
         
         teaminf_list.append([name, id, website])
-    
-    return teaminf_list
+
+    return teaminf_list 
 
 def getTeamsInfo():
     teaminfo = getTeams()
@@ -87,12 +87,10 @@ def getgamestat(gameID):
     URL= 'https://www.nationalleague.ch/api/games/'
     response= requests.get(URL+gameID)
     gamestats=response.json()
-    for obj in gamestats:
-        for i in range(len(gamestats)):
-            overview=obj[i]
-            print(overview)
+    print(gamestats['overview']['gameId'])
+
 
     
 
-gameID= '20236105000070'
+gameID= '20241105000180'
 getgamestat(gameID)    
