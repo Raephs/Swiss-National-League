@@ -13,5 +13,5 @@ def teamsandplayers():
                 tvalue=int(teamsnumid)
                 if  int(tvalue)== int(pvalue):
                     print(teamsID[t][0],playerID[p][0],playerID[p][1],playerID[p][2])
-      
+
 teamsandplayers()
